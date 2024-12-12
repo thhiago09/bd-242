@@ -1,0 +1,151 @@
+@startuml
+entity TB_media_types{ 
+  * **MediaType_id = INTEGER**
+--
+  Name = NVARCHAR(120)
+}
+
+entity TB_genres{ 
+  * **Genre_id = INTEGER**
+--
+  Name = NVARCHAR(120)
+}
+
+entity TB_playlists{ 
+  * **Playlist_id = INTEGER**
+--
+  Name = NVARCHAR(120)
+}
+
+entity TB_playlist_track{ 
+  * **Playlist_id = INTEGER <<FK>>**
+--
+  * **Track_id = INTEGER <<FK>>**
+}
+
+entity TB_tracks{ 
+  * **Track_id = INTEGER**
+--
+  Name = NVARCHAR(200)
+--
+  Album_id = INTEGER <<FK>>
+--
+  MediaTyper_id = INTEGER <<FK>>
+--
+  Genre_id = INTEGER <<FK>>
+--
+  Composer = NVARCHAR(220)
+--
+  Milliseconds = INTEGER
+--
+  Bytes = INTEGER
+--
+  UnitPrice = NUMERIC
+}
+
+entity TB_artists{ 
+  * **Artist_id = INTEGER**
+--
+  Name = NVARCHAR(120)
+}
+
+entity TB_invoices{ 
+  * **Invoice_id = INTEGER**
+--
+  Customer_id = INTEGER <<FK>>
+--
+  InvoiceDate = DATETIME
+--
+  BillingAdress = NVARCHAR()
+--
+  BillingCity = NVARCHAR()
+}
+
+entity TB_invoice_itens{ 
+  * **InvoiceItem_id = INTEGER**
+--
+  Invoice_id = INTEGER <<FK>>
+--
+  Track_id = INTEGER <<FK>>
+--
+  UnitPrice = NUMERIC
+--
+  Quantity = INTEGER
+}
+
+entity TB_albuns{ 
+  * **Album_id = INTEGER**
+--
+  Title = NVARCHAR(160)
+--
+  Artist_id = INTEGER <<FK>>
+}
+
+entity TB_custumers{ 
+  * **Custumer_id = INTEGER**
+--
+  FirstName = NVARCHAR(40)
+--
+  LastName = NVARCHAR(20)
+--
+  Company = NVARCHAR(80)
+--
+  Adress = NVARCHAR(70)
+--
+  City = NVARCHAR(40)
+--
+  State = NVARCHAR(40)
+--
+  Coutry = NVARCHAR(40)
+--
+  PostalCode = NVARCHAR(10)
+--
+  Phone = NVARCHAR(24)
+--
+  Fax = NVARCHAR(24)
+--
+  Email = NVARCHAR(60)
+--
+  SupportRepid = INTEGER
+}
+
+entity TB_employees{ 
+  * **Employee_id = INTEGER**
+--
+  FirstName = NVARCHAR(20)
+--
+  LastName = NVARCHAR(20)
+--
+  Title = NVARCHAR(30)
+--
+  ReportsTo = INTEGER
+--
+  BirthData = DATETIME
+--
+  HireDate = DATETIME
+--
+  Address = NVARCHAR(70)
+}
+
+TB_media_types||--o{TB_tracks
+
+TB_genres|o--o{TB_tracks
+
+TB_playlists||--o|TB_playlist_track
+
+TB_playlist_track|o--||TB_tracks
+
+TB_tracks||--o{TB_invoice_itens
+
+TB_tracks}o--o|TB_albuns
+
+TB_artists||--o{TB_albuns
+
+TB_invoices||--o{TB_invoice_itens
+
+TB_invoices}o--||TB_custumers
+
+TB_custumers}o--o|TB_employees
+
+TB_employees}o--o|TB_employees
+@enduml
